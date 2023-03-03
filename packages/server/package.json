@@ -8,8 +8,7 @@
         "dev": "nodemon -q --watch \"src/**\" --ext .ts --exec \"ts-node -r tsconfig-paths/register src/index.ts \"",
         "lint": "eslint . --ext .ts",
         "start": "ts-node -r tsconfig-paths/register --transpile-only src/index.ts",
-        "test": "ts-mocha --paths test/**/*.test.ts --timeout 10000 --exit",
-        "typecheck": "tsc --noEmit"
+        "test": "ts-mocha --paths test/**/*.test.ts --timeout 10000 --exit"
     },
     "keywords": [],
     "author": "Rodrigo Bondoc",

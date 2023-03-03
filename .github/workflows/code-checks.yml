@@ -5,8 +5,8 @@ concurrency:
 on: [push]
 
 jobs:
-  eslint:
-    name: ESLint code style checks
+  server_lint:
+    name: ESLint code style checks on server
     runs-on: ubuntu-latest
 
     steps:
@@ -18,29 +18,15 @@ jobs:
         with:
           node-version: 18
 
-      - name: Install client Dependencies
-        run: npm run client i
-
-      - name: Install server Dependencies
+      - name: Install Dependencies
         run: npm run server i
 
-      - name: Lint server code
+      - name: Lint code
         run: npm run server run lint
 
-  build:
+  server_build:
     name: Node v18
     runs-on: ubuntu-latest
-
-    services:
-      mongo:
-        image: mongo
-        env:
-          MONGO_INITDB_ROOT_USERNAME: superuser
-          MONGO_INITDB_ROOT_PASSWORD: password
-          MONGO_INITDB_DATABASE: kratos-test
-        ports:
-          - 27017:27017
-        options: --health-cmd="mongo" --health-interval=10s --health-timeout=5s --health-retries=5
     
     steps:
       - uses: actions/checkout@v3
@@ -53,15 +39,16 @@ jobs:
           cd ./packages/server
           cp .env.test.example .env.test
 
-      - name: Install Client Dependencies
-        run: npm run client i
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.9.0
+        with:
+          mongodb-version: '6.0'
 
-      - name: Install Server Dependencies
+      - name: Install Dependencies
         run: npm run server i
 
-      - name: Check Server Types
+      - name: Check Types
         run: npm run server run check-types
 
-      - name: Run Server Tests
-
+      - name: Run Tests
         run: npm run server test
