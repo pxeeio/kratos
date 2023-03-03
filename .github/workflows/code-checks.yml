@@ -14,7 +14,8 @@ jobs:
 
       - name: Create Server .env.test file
         run: |
-          echo "${{ secrets.SERVER_ENV }}" > ./packages/server/.env.test
+          cd ./packages/server
+          cp .env.test.example .env.test
 
       - name: Start MongoDB
         uses: supercharge/mongodb-github-action@1.9.0
