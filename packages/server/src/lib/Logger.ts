@@ -19,10 +19,12 @@ export default class Logger {
     }
 
     static error(args: any): void {
-        console.log(
-            chalk.red(`[${new Date().toLocaleString()}] [ERROR]`),
-            typeof args === 'string' ? chalk.redBright(args) : args,
-        );
+        if (process.env.NODE_ENV !== 'test') {
+            console.log(
+                chalk.red(`[${new Date().toLocaleString()}] [ERROR]`),
+                typeof args === 'string' ? chalk.redBright(args) : args,
+            );
+        }
     }
 
     static log(args: any): void {
