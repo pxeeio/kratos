@@ -10,39 +10,48 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '18'
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      - name: Install Client Dependencies
+      - name: Install Node.js v18
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install client Dependencies
         run: npm run client i
 
-      - name: Install Server Dependencies
+      - name: Install server Dependencies
         run: npm run server i
 
-      - name: Run eslint on server code
+      - name: Lint server code
         run: npm run server run lint
 
   build:
     name: Node v18
     runs-on: ubuntu-latest
+
+    services:
+      mongo:
+        image: mongo
+        env:
+          MONGO_INITDB_ROOT_USERNAME: superuser
+          MONGO_INITDB_ROOT_PASSWORD: password
+          MONGO_INITDB_DATABASE: kratos-test
+        ports:
+          - 27017:27017
+        options: --health-cmd="mongo" --health-interval=10s --health-timeout=5s --health-retries=5
     
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: 18
 
       - name: Create Server .env.test file
         run: |
           cd ./packages/server
           cp .env.test.example .env.test
-
-      - name: Start MongoDB
-        uses: supercharge/mongodb-github-action@1.9.0
-        with:
-          mongodb-version: '6.0'
 
       - name: Install Client Dependencies
         run: npm run client i
