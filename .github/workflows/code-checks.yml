@@ -11,9 +11,15 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '18'
-      
+
+      - name: Install Client Dependencies
+        run: npm run client i
+
       - name: Install Server Dependencies
         run: npm run server i
 
-      - name: Check types
+      - name: Check Server Types
         run: npm run server run check-types
+
+      - name: Run Server Tests
+        run: npm run server test
