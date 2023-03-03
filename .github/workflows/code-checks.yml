@@ -12,6 +12,9 @@ jobs:
         with:
           node-version: '18'
 
+      - name: Create Server .env.test file
+        run: echo "${{ secrets.SERVER_ENV }}" > .env.test
+
       - name: Start MongoDB
         uses: supercharge/mongodb-github-action@1.9.0
         with:
@@ -27,4 +30,5 @@ jobs:
         run: npm run server run check-types
 
       - name: Run Server Tests
+
         run: npm run server test
