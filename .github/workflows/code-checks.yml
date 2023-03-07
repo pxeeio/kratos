@@ -21,7 +21,7 @@ jobs:
       - name: Install Dependencies
         run: npm run server i
 
-      - name: Lint code
+      - name: Code Checks
         run: npm run server:check
 
   server_build:
