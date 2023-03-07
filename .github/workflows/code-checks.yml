@@ -5,8 +5,8 @@ concurrency:
 on: [push]
 
 jobs:
-  server_lint:
-    name: ESLint code style checks on server
+  server_check:
+    name: Code style and type checks on server
     runs-on: ubuntu-latest
 
     steps:
@@ -22,7 +22,7 @@ jobs:
         run: npm run server i
 
       - name: Lint code
-        run: npm run server run lint
+        run: npm run server:check
 
   server_build:
     name: Node v18
@@ -43,12 +43,10 @@ jobs:
         uses: supercharge/mongodb-github-action@1.9.0
         with:
           mongodb-version: '6.0'
+          mongodb-port: 27018
 
       - name: Install Dependencies
         run: npm run server i
-
-      - name: Check Types
-        run: npm run server run check-types
 
       - name: Run Tests
         run: npm run server test
